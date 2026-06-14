@@ -10,21 +10,21 @@
 
 ## Часть экосистемы
 
-Этот пайплайн — `02-jtbd-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в общей папке `../../artifacts/`**, разделяемой всеми пайплайнами.
+Этот пайплайн — `02-jtbd-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в своей папке `../../artifacts/jtbd/`**, отдельной от market (два независимых проекта, без смешивания).
 
 ## Расположение артефактов
 
 | Что | Куда писать |
 |---|---|
-| Работы (jobs) | `../../artifacts/jobs/` (общие для всех пайплайнов) |
-| Гипотезы | `../../artifacts/hypotheses/` (общие) |
-| Прогоны (round-*, checklist) | `../../artifacts/runs/02-jtbd-b2c/v15-runN/` |
+| Работы (jobs) | `../../artifacts/jtbd/jobs/` |
+| Гипотезы | `../../artifacts/jtbd/hypotheses/` |
+| Прогоны (round-*, checklist) | `../../artifacts/jtbd/runs/v15-runN/` |
 | Интервью Wave A / Wave B | `.../v15-runN/interviews/wave-a/` и `/wave-b/` |
-| Лог результатов | `../../artifacts/runs/02-jtbd-b2c/results.md` |
-| История изменений | `../../artifacts/runs/02-jtbd-b2c/DEVLOG.md` |
-| Bases (представления) | `../../artifacts/views/{jobs,hypotheses}.base` |
+| Лог результатов | `../../artifacts/jtbd/runs/results.md` |
+| История изменений | `../../artifacts/jtbd/runs/DEVLOG.md` |
+| Bases (представления) | `../../artifacts/jtbd/views/{jobs,hypotheses}.base` |
 
-Везде ниже относительные `runs/v15-runN/...`, `interviews/...`, `results.md`, `DEVLOG.md` читать относительно `../../artifacts/runs/02-jtbd-b2c/`. Работы и гипотезы пишутся в общие `../../artifacts/{jobs,hypotheses}/` с атрибутами frontmatter (`audience: b2c`, `pipeline: jtbd`, `profile`).
+Везде ниже относительные `runs/v15-runN/...`, `interviews/...`, `results.md`, `DEVLOG.md` читать относительно `../../artifacts/jtbd/runs/`. Работы и гипотезы пишутся в `../../artifacts/jtbd/{jobs,hypotheses}/` с атрибутами `audience: b2c`, `profile`. Нумерация прогонов своя, не пересекается с market.
 
 ## Required reading
 
@@ -34,8 +34,8 @@
 - `ARCHITECTURE.md` — схема стадий и контрольные правила
 - `PLAN.md` — текущий план внедрения и калибровки v15
 - `../../profiles/` — профили основателя (`saas`, `mobile-us`), общие для экосистемы
-- `../../artifacts/runs/02-jtbd-b2c/results.md` — исторические результаты запусков
-- `../../artifacts/runs/02-jtbd-b2c/DEVLOG.md` — журнал изменений
+- `../../artifacts/jtbd/runs/results.md` — исторические результаты запусков
+- `../../artifacts/jtbd/runs/DEVLOG.md` — журнал изменений
 
 ## Stack
 
@@ -47,17 +47,17 @@
 
 ### Два слоя: работы и гипотезы
 
-- **Работа** (`../../artifacts/jobs/`) — атомарная единица спроса. Формулировка JTBD, тип по AJTBD, уровень, связи с другими работами, доказательства из интервью, текущие workarounds. Живёт независимо от конкретного прогона.
-- **Гипотеза** (`../../artifacts/hypotheses/`) — предложение (решение). Бизнес-модель, цена, риски, тесты. Ссылается на работу через `job:` в frontmatter. Привязка к прогону — через поле `run:` в frontmatter.
+- **Работа** (`../../artifacts/jtbd/jobs/`) — атомарная единица спроса. Формулировка JTBD, тип по AJTBD, уровень, связи с другими работами, доказательства из интервью, текущие workarounds. Живёт независимо от конкретного прогона.
+- **Гипотеза** (`../../artifacts/jtbd/hypotheses/`) — предложение (решение). Бизнес-модель, цена, риски, тесты. Ссылается на работу через `job:` в frontmatter. Привязка к прогону — через поле `run:` в frontmatter.
 
 ## Запуск пайплайна (v15)
 
 ```
 1. Выбрать профиль основателя: ../../profiles/saas.md или ../../profiles/mobile-us.md
-2. Создать директорию ../../artifacts/runs/02-jtbd-b2c/v15-runN/
+2. Создать директорию ../../artifacts/jtbd/runs/v15-runN/
 3. Создать .../v15-runN/checklist.md
 4. Запустить R0-R5 по methodology.md
-5. Обновить ../../artifacts/runs/02-jtbd-b2c/results.md + DEVLOG.md
+5. Обновить ../../artifacts/jtbd/runs/results.md + DEVLOG.md
 ```
 
 ### Команда для запуска

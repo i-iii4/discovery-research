@@ -6,20 +6,21 @@
 
 ## Часть экосистемы
 
-Этот пайплайн — `01-market-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в общей папке `../../artifacts/`**, разделяемой всеми пайплайнами.
+Этот пайплайн — `01-market-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в своей папке `../../artifacts/market/`**, отдельной от jtbd (два независимых проекта, без смешивания).
 
 ## Расположение артефактов
 
 | Что | Куда писать |
 |---|---|
-| Работы (jobs) | `../../artifacts/jobs/` (общие для всех пайплайнов) |
-| Гипотезы | `../../artifacts/hypotheses/` (общие) |
-| Прогоны (round-*, поиски) | `../../artifacts/runs/01-market-b2c/vN/` |
-| Лог результатов | `../../artifacts/runs/01-market-b2c/results.md` |
-| История изменений | `../../artifacts/runs/01-market-b2c/DEVLOG.md` |
-| Досье финалистов (legacy) | `../../artifacts/runs/01-market-b2c/finalists/` |
+| Гипотезы | `../../artifacts/market/hypotheses/` |
+| Работы (если извлекаются) | `../../artifacts/market/jobs/` |
+| Прогоны (round-*, поиски) | `../../artifacts/market/runs/vN/` |
+| Лог результатов | `../../artifacts/market/runs/results.md` |
+| История изменений | `../../artifacts/market/runs/DEVLOG.md` |
+| Досье финалистов (legacy) | `../../artifacts/market/runs/finalists/` |
+| Представления Bases | `../../artifacts/market/views/` |
 
-Везде ниже относительные пути `runs/...`, `results.md`, `DEVLOG.md`, `finalists/` читать относительно `../../artifacts/runs/01-market-b2c/`. Новые гипотезы/работы пишутся в общие `../../artifacts/{hypotheses,jobs}/` с атрибутами frontmatter (`audience: b2c`, `pipeline: market`, `profile`).
+Везде ниже относительные пути `runs/...`, `results.md`, `DEVLOG.md`, `finalists/` читать относительно `../../artifacts/market/runs/`. Гипотезы/работы — в `../../artifacts/market/{hypotheses,jobs}/` с атрибутами `audience: b2c`, `profile`. Нумерация прогонов своя, не пересекается с jtbd.
 
 ## Required reading
 
@@ -27,8 +28,8 @@
 - `ARCHITECTURE.md` — обзор пайплайна, стадии, агенты, поток данных.
 - `PLAN.md` — план доработок методологии.
 - `../../profiles/` — профили основателя (`saas`, `mobile-us`), общие для экосистемы.
-- `../../artifacts/runs/01-market-b2c/results.md` — результаты всех запусков, ранжирование, pipeline comparison.
-- `../../artifacts/runs/01-market-b2c/DEVLOG.md` — история изменений по версиям.
+- `../../artifacts/market/runs/results.md` — результаты всех запусков, ранжирование, pipeline comparison.
+- `../../artifacts/market/runs/DEVLOG.md` — история изменений по версиям.
 
 ## Stack
 
@@ -43,11 +44,11 @@
 
 ```
 1. Выбрать профиль основателя: ../../profiles/saas.md или ../../profiles/mobile-us.md
-2. Создать директорию ../../artifacts/runs/01-market-b2c/vN/
+2. Создать директорию ../../artifacts/market/runs/vN/
 3. В Claude Code: "Запусти market-b2c discovery по methodology.md, профиль <profile>"
-4. Артефакты каждого раунда → ../../artifacts/runs/01-market-b2c/vN/
-5. Лог результатов → ../../artifacts/runs/01-market-b2c/results.md
-6. Гипотезы-финалисты → ../../artifacts/hypotheses/ (атрибуты: pipeline=market, audience=b2c, profile)
+4. Артефакты каждого раунда → ../../artifacts/market/runs/vN/
+5. Лог результатов → ../../artifacts/market/runs/results.md
+6. Гипотезы-финалисты → ../../artifacts/market/hypotheses/ (атрибуты: audience=b2c, profile)
 ```
 
 ## Профиль основателя
