@@ -17,6 +17,15 @@ version: 12
 > Фокус: одна функция, 2 недели до MVP, дистрибуция без маркетингового бюджета.
 > Runtime: Claude Code (Task tool, `subagent_type="general-purpose"`).
 
+## Профиль прогона (override-слой)
+
+Каждый прогон выбирает профиль основателя из `../../profiles/<profile>.md`. Профиль — это **override-слой поверх промптов ниже**: оркестратор обязан применить его директивы к Scout-источникам, Generator-осям и kill-rules ДО запуска агентов.
+
+- **`saas`** (по умолчанию) — промпты ниже применяются как есть.
+- **`mobile-us`** — применить `../../profiles/mobile-us.md`: Scout добавляет mobile-источники (App Store/Google Play отзывы, Sensor Tower/Appfigures, TikTok/Reels), kill-rules переформулируются под плотный стор («слабый лидер» вместо «пустой рынок»), Generator получает обязательную ось виральности, Deep Validation — оси retention/paywall/ASO. Build-feasibility перестаёт быть kill-критерием; главным фильтром становится органическая дистрибуция без paid UA.
+
+Атрибут `profile` проставляется в frontmatter каждой гипотезы/работы прогона. Профиль задаёт `audience` (b2c для этого пайплайна) и `pipeline: market`.
+
 **Эволюция подхода:**
 
 | v1: Search-first | v2: Scout+Generate | v3-v4: Blind generate | v5-v9: Hybrid | v10: Quality-first | v11: Non-empty output | v12: Evidence grounding |

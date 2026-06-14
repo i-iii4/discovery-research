@@ -8,14 +8,34 @@
 - без web-search как обязательного входного фильтра
 - две волны глубинных интервью (Discovery -> Validation)
 
+## Часть экосистемы
+
+Этот пайплайн — `02-jtbd-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в общей папке `../../artifacts/`**, разделяемой всеми пайплайнами.
+
+## Расположение артефактов
+
+| Что | Куда писать |
+|---|---|
+| Работы (jobs) | `../../artifacts/jobs/` (общие для всех пайплайнов) |
+| Гипотезы | `../../artifacts/hypotheses/` (общие) |
+| Прогоны (round-*, checklist) | `../../artifacts/runs/02-jtbd-b2c/v15-runN/` |
+| Интервью Wave A / Wave B | `.../v15-runN/interviews/wave-a/` и `/wave-b/` |
+| Лог результатов | `../../artifacts/runs/02-jtbd-b2c/results.md` |
+| История изменений | `../../artifacts/runs/02-jtbd-b2c/DEVLOG.md` |
+| Bases (представления) | `../../artifacts/views/{jobs,hypotheses}.base` |
+
+Везде ниже относительные `runs/v15-runN/...`, `interviews/...`, `results.md`, `DEVLOG.md` читать относительно `../../artifacts/runs/02-jtbd-b2c/`. Работы и гипотезы пишутся в общие `../../artifacts/{jobs,hypotheses}/` с атрибутами frontmatter (`audience: b2c`, `pipeline: jtbd`, `profile`).
+
 ## Required reading
 
 - `methodology.md` — главный рабочий файл (`v15-jtbd-only`)
 - `persona-protocol.md` — детальный протокол Wave A / Wave B
+- `ajtbd-prompts.md` — референсные промпты интервью
 - `ARCHITECTURE.md` — схема стадий и контрольные правила
 - `PLAN.md` — текущий план внедрения и калибровки v15
-- `results.md` — исторические результаты запусков
-- `DEVLOG.md` — журнал изменений
+- `../../profiles/` — профили основателя (`saas`, `mobile-us`), общие для экосистемы
+- `../../artifacts/runs/02-jtbd-b2c/results.md` — исторические результаты запусков
+- `../../artifacts/runs/02-jtbd-b2c/DEVLOG.md` — журнал изменений
 
 ## Stack
 
@@ -25,44 +45,19 @@
 | Claude Sonnet | Persona builder, интервью, scoring, RAT |
 | TeamCreate | Обязательный двухагентный формат для Wave B |
 
-## Structure
-
-```
-b2c-discovery-persona/
-  CLAUDE.md
-  ARCHITECTURE.md
-  PLAN.md
-  DEVLOG.md
-  methodology.md
-  persona-protocol.md
-  ajtbd-prompts.md
-  results.md              # лог прогонов со ссылками на файлы
-  hypotheses.base         # база данных гипотез (Obsidian Bases)
-  jobs.base               # база данных работ (Obsidian Bases)
-  pipeline.canvas
-  jobs/                   # 1 файл = 1 работа (JTBD, спрос)
-    Название работы.md    # frontmatter + 5 секций (формулировка, тип, связи, доказательства, workarounds)
-  hypotheses/             # 1 файл = 1 бизнес-гипотеза (предложение, ссылается на работу)
-    Название гипотезы.md  # v15 (AJTBD) и legacy (v2-v14), различаются полем methodology
-  runs/
-    v15-runN/
-      interviews/
-      round-*.md
-```
-
 ### Два слоя: работы и гипотезы
 
-- **Работа** (`jobs/`) — атомарная единица спроса. Формулировка JTBD, тип по AJTBD, уровень, связи с другими работами, доказательства из интервью, текущие workarounds. Живёт независимо от конкретного прогона.
-- **Гипотеза** (`hypotheses/`) — предложение (решение). Бизнес-модель, цена, риски, тесты. Ссылается на работу через `job:` в frontmatter. Привязка к прогону — через поле `run:` в frontmatter.
+- **Работа** (`../../artifacts/jobs/`) — атомарная единица спроса. Формулировка JTBD, тип по AJTBD, уровень, связи с другими работами, доказательства из интервью, текущие workarounds. Живёт независимо от конкретного прогона.
+- **Гипотеза** (`../../artifacts/hypotheses/`) — предложение (решение). Бизнес-модель, цена, риски, тесты. Ссылается на работу через `job:` в frontmatter. Привязка к прогону — через поле `run:` в frontmatter.
 
 ## Запуск пайплайна (v15)
 
 ```
-1. Обновить профиль основателя и ограничения в methodology.md
-2. Создать директорию runs/v15-runN/
-3. Создать runs/v15-runN/checklist.md
+1. Выбрать профиль основателя: ../../profiles/saas.md или ../../profiles/mobile-us.md
+2. Создать директорию ../../artifacts/runs/02-jtbd-b2c/v15-runN/
+3. Создать .../v15-runN/checklist.md
 4. Запустить R0-R5 по methodology.md
-5. Обновить results.md + DEVLOG.md
+5. Обновить ../../artifacts/runs/02-jtbd-b2c/results.md + DEVLOG.md
 ```
 
 ### Команда для запуска

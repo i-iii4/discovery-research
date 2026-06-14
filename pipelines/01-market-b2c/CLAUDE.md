@@ -4,13 +4,31 @@
 на пересечениях JTBD-ниш. Не код, а система промптов + правил + cross-run learning.
 Запускается в Claude Code через Task tool.
 
+## Часть экосистемы
+
+Этот пайплайн — `01-market-b2c` в экосистеме `discovery-research` (см. корневой `../../README.md`). Методология лежит здесь, **данные — в общей папке `../../artifacts/`**, разделяемой всеми пайплайнами.
+
+## Расположение артефактов
+
+| Что | Куда писать |
+|---|---|
+| Работы (jobs) | `../../artifacts/jobs/` (общие для всех пайплайнов) |
+| Гипотезы | `../../artifacts/hypotheses/` (общие) |
+| Прогоны (round-*, поиски) | `../../artifacts/runs/01-market-b2c/vN/` |
+| Лог результатов | `../../artifacts/runs/01-market-b2c/results.md` |
+| История изменений | `../../artifacts/runs/01-market-b2c/DEVLOG.md` |
+| Досье финалистов (legacy) | `../../artifacts/runs/01-market-b2c/finalists/` |
+
+Везде ниже относительные пути `runs/...`, `results.md`, `DEVLOG.md`, `finalists/` читать относительно `../../artifacts/runs/01-market-b2c/`. Новые гипотезы/работы пишутся в общие `../../artifacts/{hypotheses,jobs}/` с атрибутами frontmatter (`audience: b2c`, `pipeline: market`, `profile`).
+
 ## Required reading
 
-- `methodology.md` — пайплайн v12, промпты всех агентов, правила генерации, blacklist/whitelist, lessons learned. Главный рабочий файл.
-- `results.md` — результаты всех запусков (v1-v10), ранжирование гипотез, pipeline comparison.
-- `ARCHITECTURE.md` — обзор пайплайна v12, стадии, агенты, поток данных.
+- `methodology.md` — пайплайн, промпты всех агентов, правила генерации, blacklist/whitelist, lessons learned. Главный рабочий файл.
+- `ARCHITECTURE.md` — обзор пайплайна, стадии, агенты, поток данных.
 - `PLAN.md` — план доработок методологии.
-- `DEVLOG.md` — история изменений по версиям.
+- `../../profiles/` — профили основателя (`saas`, `mobile-us`), общие для экосистемы.
+- `../../artifacts/runs/01-market-b2c/results.md` — результаты всех запусков, ранжирование, pipeline comparison.
+- `../../artifacts/runs/01-market-b2c/DEVLOG.md` — история изменений по версиям.
 
 ## Stack
 
@@ -21,42 +39,25 @@
 | Claude Haiku | Quick Validator (дешёвый gate) |
 | Web Search | Demand signals, competition check, validation |
 
-## Structure
-
-```
-b2c-discovery/
-  CLAUDE.md           — этот файл
-  ARCHITECTURE.md     — обзор пайплайна (v12)
-  PLAN.md             — план доработок
-  DEVLOG.md           — история изменений
-  methodology.md      — пайплайн + промпты (главный рабочий файл, v12)
-  results.md          — результаты всех запусков
-  runs/               — артефакты отдельных запусков
-    v7-run1/          — round-0 через round-4
-    v7-run2/          — round-0 через round-4
-    v8-run1/          — round-0 через round-4
-  finalists/          — подробные досье финалистов (14 файлов, Obsidian wikilinks)
-    README.md         — индекс всех финалистов + Dataview query
-```
-
 ## Запуск пайплайна
 
 ```
-1. Обновить methodology.md (blacklist, whitelist, профиль основателя)
-2. Создать директорию runs/vN/
-3. В Claude Code: "Запусти B2C pet-project discovery v12 по методологии из methodology.md"
-4. Артефакты каждого раунда сохраняются в runs/vN/
-5. Финальные результаты добавляются в results.md
-6. Досье финалистов (MODERATE/STRONG/CONDITIONAL) создаются в finalists/
+1. Выбрать профиль основателя: ../../profiles/saas.md или ../../profiles/mobile-us.md
+2. Создать директорию ../../artifacts/runs/01-market-b2c/vN/
+3. В Claude Code: "Запусти market-b2c discovery по methodology.md, профиль <profile>"
+4. Артефакты каждого раунда → ../../artifacts/runs/01-market-b2c/vN/
+5. Лог результатов → ../../artifacts/runs/01-market-b2c/results.md
+6. Гипотезы-финалисты → ../../artifacts/hypotheses/ (атрибуты: pipeline=market, audience=b2c, profile)
 ```
 
-## Профиль основателя (текущий)
+## Профиль основателя
 
-- Стек: full-stack, любая платформа
-- Интересные области: Productivity, PKM, AI/LLM, Health/Wellness, Creator tools, SaaS tools
-- Anti-области: iGaming
-- Целевой доход: $5K+/мес
-- Ограничение: 2 недели до MVP, один разработчик
+Профили вынесены в `../../profiles/` (общие для экосистемы). Прогон выбирает один:
+
+- **saas** — исходный: full-stack solo-dev, web/любая платформа, $5K+/мес, 2 недели до MVP, anti-iGaming.
+- **mobile-us** — мобильные приложения под рынок США, подписка; расширенная рамка (код — commodity, главный фильтр — органическая дистрибуция без UA-бюджета).
+
+Атрибут `profile` проставляется в frontmatter каждой гипотезы/работы прогона.
 
 ## Методологическая культура
 
