@@ -1,0 +1,38 @@
+{
+	"nodes":[
+		{"id":"group_wave_b","type":"group","x":-420,"y":1420,"width":840,"height":780,"color":"5","label":"Wave B: Independent Validation"},
+		{"id":"group_seed","type":"group","x":-420,"y":120,"width":840,"height":620,"color":"4","label":"R0-R1: Domain Seed + Persona Panel A"},
+		{"id":"group_wave_a","type":"group","x":-420,"y":800,"width":840,"height":560,"color":"2","label":"Wave A: Discovery Interviews"},
+		{"id":"group_outputs","type":"group","x":-420,"y":2280,"width":840,"height":380,"color":"6","label":"R5: Synthesis + Outputs"},
+		{"id":"domain_seed","type":"text","text":"## R0: Domain Seed\n1 область + 2-3 сегмента\n\nФиксируем:\n- domain_reason\n- exclusions\n- scope","x":-140,"y":220,"width":280,"height":180,"color":"4"},
+		{"id":"personas_a","type":"text","text":"## R1: Persona Panel A\n8-10 discovery персон\n\nMix:\nHIGH / MEDIUM / LOW\n+ churned profiles","x":-140,"y":450,"width":280,"height":190,"color":"4"},
+		{"id":"personas_b","type":"text","text":"## R3: Persona Panel B\n8-10 validation персон\n\nВажно:\n- новая панель\n- без reuse из Wave A","x":-140,"y":1500,"width":280,"height":200,"color":"5"},
+		{"id":"interviews_b","type":"text","text":"## R4: Deep Interviews B\nДВУХАГЕНТНЫЙ формат\n\nInput: shortlist jobs + panel B\n\nR4 = блокер валидности","x":-140,"y":1740,"width":280,"height":210,"color":"1"},
+		{"id":"scoring_rat","type":"text","text":"## R4.5: Scoring + RAT\nScore 0-100:\nBreadth/Severity/Frequency/\nSpend/Switching\n\nRAT: Top-5 risks (P x I)","x":-140,"y":1980,"width":280,"height":170,"color":"5"},
+		{"id":"cycle","type":"text","text":"### Cycle N+1\nDiscovered Jobs\n-> R0 Domain Seed","x":520,"y":2440,"width":220,"height":110,"color":"3"},
+		{"id":"synthesis","type":"text","text":"## R5: Synthesis\nИтоговые verdicts\nALIVE / WEAK / KILL\n\nТолько если R4 complete","x":-140,"y":2340,"width":280,"height":140,"color":"6"},
+		{"id":"output_jobs","type":"text","text":"## OUTPUT 1\nValidated Jobs\n(ranked shortlist)","x":-360,"y":2520,"width":280,"height":90,"color":"6"},
+		{"id":"output_discovered","type":"text","text":"## OUTPUT 2\nDiscovered Jobs Catalog\n(next cycle backlog)","x":80,"y":2520,"width":280,"height":90,"color":"6"},
+		{"id":"stage_note_seed","type":"text","text":"### Этап R0-R1\nЧто: выбираем домен и собираем первую панель персон.\nЗачем: задать фокус цикла и получить разнообразные контексты для discovery.","x":-840,"y":180,"width":340,"height":180,"color":"4"},
+		{"id":"stage_note_wave_a","type":"text","text":"### Этап Wave A\nЧто: проводим глубинные интервью и извлекаем реальные jobs.\nЗачем: собрать сырой материал без ранней фильтрации и найти новые работы.","x":-840,"y":860,"width":340,"height":170,"color":"2"},
+		{"id":"stage_note_wave_b","type":"text","text":"### Этап Wave B\nЧто: независимая валидация shortlist на новой панели + scoring и RAT.\nЗачем: убрать confirmation bias и получить сопоставимый вердикт по jobs.","x":-840,"y":1520,"width":340,"height":190,"color":"5"},
+		{"id":"stage_note_outputs","type":"text","text":"### Этап R5 + Outputs\nЧто: синтезируем итоги и формируем два выхода.\nЗачем: принять решение по текущему циклу и подготовить вход для следующего.","x":-840,"y":2260,"width":340,"height":170,"color":"6"},
+		{"id":"lead","type":"text","text":"# LEAD\nОркестратор: Claude Code + человек\nPipeline: v15-jtbd-only","x":-170,"y":-80,"width":340,"height":90,"color":"6"},
+		{"id":"interviews_a","type":"text","text":"## R2: Deep Interviews A\nГлубинники discovery\n\nВыход:\n- реальные jobs\n- workaround chains\n- switching signals\n- discovered jobs","x":-140,"y":860,"width":280,"height":220,"color":"2"},
+		{"id":"job_synthesis","type":"text","text":"## R2.5: Job Synthesis\nКластеризация + дедуп\n\nShortlist: 8-12 jobs\n+ приоритизация","x":-140,"y":1140,"width":280,"height":160,"color":"2"}
+	],
+	"edges":[
+		{"id":"e01","fromNode":"lead","fromSide":"bottom","toNode":"domain_seed","toSide":"top"},
+		{"id":"e02","fromNode":"domain_seed","fromSide":"bottom","toNode":"personas_a","toSide":"top"},
+		{"id":"e03","fromNode":"personas_a","fromSide":"bottom","toNode":"interviews_a","toSide":"top"},
+		{"id":"e04","fromNode":"interviews_a","fromSide":"bottom","toNode":"job_synthesis","toSide":"top"},
+		{"id":"e05","fromNode":"job_synthesis","fromSide":"bottom","toNode":"personas_b","toSide":"top","label":"shortlist"},
+		{"id":"e06","fromNode":"personas_b","fromSide":"bottom","toNode":"interviews_b","toSide":"top"},
+		{"id":"e07","fromNode":"interviews_b","fromSide":"bottom","toNode":"scoring_rat","toSide":"top"},
+		{"id":"e08","fromNode":"scoring_rat","fromSide":"bottom","toNode":"synthesis","toSide":"top"},
+		{"id":"e09","fromNode":"synthesis","fromSide":"bottom","toNode":"output_jobs","toSide":"top"},
+		{"id":"e10","fromNode":"synthesis","fromSide":"bottom","toNode":"output_discovered","toSide":"top"},
+		{"id":"e11","fromNode":"output_discovered","fromSide":"right","toNode":"cycle","toSide":"left"},
+		{"id":"e12","fromNode":"cycle","fromSide":"top","toNode":"domain_seed","toSide":"right","label":"next run"}
+	]
+}

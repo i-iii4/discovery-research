@@ -1,0 +1,8 @@
+# Артефакты прогонов — локальные, не публикуются (только методология идёт в git)
+artifacts/
+
+# Obsidian vault config
+.obsidian/
+
+# macOS
+.DS_Store
