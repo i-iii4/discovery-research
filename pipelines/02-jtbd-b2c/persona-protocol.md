@@ -173,20 +173,39 @@ For each candidate job:
 
 ## Validation protocol (Wave B)
 
-### Team setup (mandatory)
+### Механизм: TeamCreate (обязательно)
 
-Use two-agent team per interview stream:
-- Agent A: Interviewer (knows target job)
-- Agent B: Persona (knows only persona profile)
+Wave B проводится через ШТАТНЫЙ командный функционал Claude Code — `TeamCreate`, а НЕ через ручной спавн анонимных субагентов с инструкцией «общайтесь через SendMessage». Только TeamCreate даёт реальное peer-to-peer взаимодействие двух изолированных агентов (teammates общаются напрямую, сообщения доставляются автоматически). Ручная симуляция через обычный Agent tool НЕ работает — SendMessage peer-DM действует только между членами одной команды.
 
-### Why mandatory
+Процедура (оркеструет Lead):
+1. `TeamCreate` — создать команду на прогон (например `team_name: v15-runN-waveB`).
+2. На КАЖДОЕ интервью Lead спавнит через Agent tool ДВУХ named teammates в этой команде (`team_name` + `name`):
+   - **Interviewer** (`name: interviewer-pbXX`) — знает целевую работу + Mom Test script, ведёт интервью.
+   - **Persona** (`name: persona-pbXX`) — знает ТОЛЬКО профиль персоны, НЕ знает целевую работу (изоляция знания против confirmation bias).
+3. Диалог идёт НАПРЯМУЮ между teammates через `SendMessage` (peer DM) по блокам Mom Test (1-5): Interviewer спрашивает → Persona отвечает → Interviewer углубляется.
+4. Interviewer записывает полный транскрипт в `interviews/wave-b/B-pbXX.md` (`## Summary` с метриками + `## Transcript`) и выносит вердикт по целевой работе.
+5. Lead ВЕРИФИЦИРУЕТ каждый файл после интервью: правильное имя, правильный домен, есть вердикт.
 
-Single-agent interviews tend to inflate ALIVE verdicts by confirmation bias.
-Two-agent isolation is the control layer before final synthesis.
+### Жёсткие правила оркестрации (нарушение = невалидный прогон)
+
+- **Субагент НЕ спавнит субагентов.** Рекурсивный спавн запрещён — он теряет контроль (async, ранний возврат). Всю команду спавнит Lead.
+- **Оркеструет только Lead.** Lead создаёт команду, спавнит teammates, координирует, верифицирует. Оркестрацию нельзя делегировать субагенту.
+- **Детерминированные имена.** Lead задаёт точные пути/имена файлов; teammate пишет ровно туда; Lead проверяет после.
+- **Синхронный барьер.** Дождаться завершения ВСЕХ интервью (все блоки, все файлы) до перехода к Scoring. Никакого background-раннего-возврата в середине интервью.
+
+### Изоляция данных прогона (обязательно)
+
+- Прогон читает ТОЛЬКО свои артефакты `runs/v15-runN/round-*` и `interviews/`.
+- Агентам ЗАПРЕЩЕНО читать legacy `../../artifacts/jtbd/jobs/` и артефакты прошлых прогонов — иначе старые работы загрязняют интервью (реальный сбой в v15-run3: Wave B записал чужой домен из наследия v15-run2).
+- Для слепого прогона — также запрет на `../../artifacts/market/`.
+
+### Why two-agent mandatory
+
+Single-agent interviews tend to inflate ALIVE verdicts by confirmation bias. Two-agent isolation (Persona не знает целевую работу) — контрольный слой перед синтезом.
 
 ### Blocking rule
 
-If Wave B two-agent interviews are not complete:
+Если Wave B не проведён в двухагентном TeamCreate-формате ИЛИ транскрипты не верифицированы Lead:
 - mark run as `UNVALIDATED`
 - do not publish final ALIVE verdicts
 
